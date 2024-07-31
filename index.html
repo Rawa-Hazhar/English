@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literary Epoch Explorer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f7f1;
+        }
+        h1, h2, h3 {
+            font-family: 'Palatino', serif;
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+        .epoch-explorer {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .author-info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+        }
+        .quote {
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            font-style: italic;
+        }
+        .period-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .quiz {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f8f5;
+            border-radius: 8px;
+        }
+        .quiz button {
+            background-color: #2ecc71;
+        }
+        .quiz button:hover {
+            background-color: #27ae60;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .correct {
+            color: #2ecc71;
+        }
+        .incorrect {
+            color: #e74c3c;
+        }
+        .literary-device {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f5eef8;
+            border-radius: 8px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <h1>Literary Epoch Explorer</h1>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const literaryPeriods = [
+            {
+                name: "Renaissance",
+                years: "14th to 17th century",
+                description: "A period of cultural rebirth, marked by a renewed interest in classical learning and values.",
+                authors: [
+                    {
+                        name: "William Shakespeare",
+                        lifespan: "1564-1616",
+                        famousWorks: ["Hamlet", "Romeo and Juliet", "Macbeth"],
+                        quote: "To be, or not to be: that is the question.",
+                        quoteSource: "Hamlet",
+                        literaryDevice: {
+                            name: "Soliloquy",
+                            explanation: "A dramatic device where a character speaks their thoughts aloud, revealing their inner feelings to the audience."
+                        }
+                    },
+                    {
+                        name: "Christopher Marlowe",
+                        lifespan: "1564-1593",
+                        famousWorks: ["Doctor Faustus", "Tamburlaine", "The Jew of Malta"],
+                        quote: "Was this the face that launched a thousand ships, And burnt the topless towers of Ilium?",
+                        quoteSource: "Doctor Faustus",
+                        literaryDevice: {
+                            name: "Allusion",
+                            explanation: "A reference to a well-known person, place, event, literary work, or work of art."
+                        }
+                    }
+                ]
+            },
+            {
+                name: "Romantic",
+                years: "Late 18th to mid-19th century",
+                description: "A movement emphasizing emotion, individualism, and the glorification of nature and the past.",
+                authors: [
+                    {
+                        name: "Jane Austen",
+                        lifespan: "1775-1817",
+                        famousWorks: ["Pride and Prejudice", "Emma", "Sense and Sensibility"],
+                        quote: "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+                        quoteSource: "Pride and Prejudice",
+                        literaryDevice: {
+                            name: "Irony",
+                            explanation: "The use of words to convey a meaning that is the opposite of its literal meaning."
+                        }
+                    },
+                    {
+                        name: "William Wordsworth",
+                        lifespan: "1770-1850",
+                        famousWorks: ["Lyrical Ballads", "The Prelude", "I Wandered Lonely as a Cloud"],
+                        quote: "Poetry is the spontaneous overflow of powerful feelings: it takes its origin from emotion recollected in tranquility.",
+                        quoteSource: "Lyrical Ballads",
+                        literaryDevice: {
+                            name: "Imagery",
+                            explanation: "Vivid descriptive language that appeals to the senses."
+                        }
+                    }
+                ]
+            },
+            {
+                name: "Victorian",
+                years: "1837-1901",
+                description: "Coinciding with Queen Victoria's reign, this period was characterized by rapid change and social criticism.",
+                authors: [
+                    {
+                        name: "Charles Dickens",
+                        lifespan: "1812-1870",
+                        famousWorks: ["Great Expectations", "A Tale of Two Cities", "Oliver Twist"],
+                        quote: "It was the best of times, it was the worst of times.",
+                        quoteSource: "A Tale of Two Cities",
+                        literaryDevice: {
+                            name: "Anaphora",
+                            explanation: "The repetition of a word or phrase at the beginning of successive clauses."
+                        }
+                    },
+                    {
+                        name: "Emily Brontë",
+                        lifespan: "1818-1848",
+                        famousWorks: ["Wuthering Heights"],
+                        quote: "He's more myself than I am. Whatever our souls are made of, his and mine are the same.",
+                        quoteSource: "Wuthering Heights",
+                        literaryDevice: {
+                            name: "Metaphor",
+                            explanation: "A figure of speech in which a word or phrase is applied to an object or action to which it is not literally applicable."
+                        }
+                    }
+                ]
+            },
+            {
+                name: "Modernist",
+                years: "Early to mid-20th century",
+                description: "A period marked by a deliberate break with traditional styles of poetry and prose.",
+                authors: [
+                    {
+                        name: "Virginia Woolf",
+                        lifespan: "1882-1941",
+                        famousWorks: ["Mrs Dalloway", "To the Lighthouse", "A Room of One's Own"],
+                        quote: "A woman must have money and a room of her own if she is to write fiction.",
+                        quoteSource: "A Room of One's Own",
+                        literaryDevice: {
+                            name: "Stream of Consciousness",
+                            explanation: "A narrative mode that seeks to portray an individual's point of view by giving the written equivalent of the character's thought processes."
+                        }
+                    },
+                    {
+                        name: "James Joyce",
+                        lifespan: "1882-1941",
+                        famousWorks: ["Ulysses", "Dubliners", "Finnegans Wake"],
+                        quote: "History, Stephen said, is a nightmare from which I am trying to awake.",
+                        quoteSource: "Ulysses",
+                        literaryDevice: {
+                            name: "Epiphany",
+                            explanation: "A sudden realization or comprehension of the essence or meaning of something."
+                        }
+                    }
+                ]
+            },
+            {
+                name: "Postmodern",
+                years: "Mid to late 20th century",
+                description: "A movement characterized by skepticism, irony, and philosophical critiques of culture and literature.",
+                authors: [
+                    {
+                        name: "George Orwell",
+                        lifespan: "1903-1950",
+                        famousWorks: ["1984", "Animal Farm", "Homage to Catalonia"],
+                        quote: "All animals are equal, but some animals are more equal than others.",
+                        quoteSource: "Animal Farm",
+                        literaryDevice: {
+                            name: "Allegory",
+                            explanation: "A story, poem, or picture that can be interpreted to reveal a hidden meaning, typically a moral or political one."
+                        }
+                    },
+                    {
+                        name: "Margaret Atwood",
+                        lifespan: "1939-present",
+                        famousWorks: ["The Handmaid's Tale", "Oryx and Crake", "The Blind Assassin"],
+                        quote: "Nolite te bastardes carborundorum.",
+                        quoteSource: "The Handmaid's Tale",
+                        literaryDevice: {
+                            name: "Dystopia",
+                            explanation: "An imagined state or society in which there is great suffering or injustice, typically one that is totalitarian or post-apocalyptic."
+                        }
+                    }
+                ]
+            }
+        ];
+
+        function LiteraryEpochExplorer() {
+            const [currentPeriod, setCurrentPeriod] = React.useState(null);
+            const [currentAuthor, setCurrentAuthor] = React.useState(null);
+            const [quizAnswer, setQuizAnswer] = React.useState("");
+            const [feedback, setFeedback] = React.useState("");
+            const [progress, setProgress] = React.useState(0);
+
+            const exploreEpoch = () => {
+                const randomPeriod = literaryPeriods[Math.floor(Math.random() * literaryPeriods.length)];
+                setCurrentPeriod(randomPeriod);
+                const randomAuthor = randomPeriod.authors[Math.floor(Math.random() * randomPeriod.authors.length)];
+                setCurrentAuthor(randomAuthor);
+                setQuizAnswer("");
+                setFeedback("");
+                setProgress(prev => Math.min(prev + 20, 100));
+            };
+
+            const checkAnswer = () => {
+                if (quizAnswer.toLowerCase() === currentAuthor.quoteSource.toLowerCase()) {
+                    setFeedback("Correct! Well done!");
+                } else {
+                    setFeedback(`Not quite. The correct answer is "${currentAuthor.quoteSource}".`);
+                }
+            };
+
+            return (
+                <div className="epoch-explorer">
+                    <h2>Welcome to the Literary Epoch Explorer!</h2>
+                    <p>Embark on a journey through time to explore different periods of English literature. Click the button to discover a random literary period and author.</p>
+                    <button onClick={exploreEpoch}>Explore a Literary Epoch</button>
+                    {currentPeriod && currentAuthor && (
+                        <div className="author-info">
+                            <h3>You've arrived in the {currentPeriod.name} period! ({currentPeriod.years})</h3>
+                            <div className="period-info">
+                                <p><strong>About this period:</strong> {currentPeriod.description}</p>
+                            </div>
+                            <p>You're meeting {currentAuthor.name} ({currentAuthor.lifespan}).</p>
+                            <p><strong>Famous works:</strong> {currentAuthor.famousWorks.join(", ")}</p>
+                            <div className="quote">
+                                <p>"{currentAuthor.quote}"</p>
+                            </div>
+                            <div className="quiz">
+                                <p>Can you identify which work this quote is from?</p>
+                                <input 
+                                    type="text" 
+                                    value={quizAnswer} 
+                                    onChange={(e) => setQuizAnswer(e.target.value)}
+                                    placeholder="Enter the work's title"
+                                />
+                                <button onClick={checkAnswer}>Check Answer</button>
+                                {feedback && <p className={`feedback ${feedback.startsWith("Correct") ? "correct" : "incorrect"}`}>{feedback}</p>}
+                            </div>
+                            <div className="literary-device">
+                                <h4>Literary Device Spotlight: {currentAuthor.literaryDevice.name}</h4>
+                                <p>{currentAuthor.literaryDevice.explanation}</p>
+                                <p>Can you identify this literary device in the given quote or in other works by {currentAuthor.name}?</p>
+                            </div>
+                        </div>
+                    )}
+                    <div className="progress-bar">
+                        <div className="progress" style={{width: `${progress}%`}}></div>
+                    </div>
+                    <p>Progress: {progress}% of literary periods explored</p>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<LiteraryEpochExplorer />, document.getElementById('root'));
+    </script>
+</body>
+</html>
